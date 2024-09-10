@@ -1,0 +1,19 @@
+Debugging:
+
+## Describe deployment:
+kubectl describe flinkdeployment flink-example-1 -n flink
+
+## Get deployment `status` to view errors:
+kubectl get flinkdeployments.flink.apache.org flink-example-1 -n flink -o yaml
+
+
+## Check for all issues in events
+kubectl get events -n flink --sort-by='.metadata.creationTimestamp'
+
+## Manually port forward the UI port- service discovery on tilt is shitty
+kubectl port-forward svc/flink-example-1-jobmanager 8081:8081 -n flink
+
+## Check + debug ingress:
+kubectl get ingress -n flink
+kubectl describe ingress flink-example-1-ingress -n flink
+

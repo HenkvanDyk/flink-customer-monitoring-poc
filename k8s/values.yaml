@@ -1,0 +1,32 @@
+
+schema-registry:
+  enabled: true
+  fullnameOverride: "schema-registry"
+  kafka:
+    image:
+      tag: 3.3.1
+    enabled: true
+    startupProbe:
+      enabled: true
+      initialDelaySeconds: 60
+    fullnameOverride: "kafka"
+    auth:
+      clientProtocol: sasl
+      sasl:
+        jaas:
+          clientUsers: ["connect"]
+          clientPasswords: ["connect"]
+    readinessProbe:
+      initialDelaySeconds: 30
+    livenessProbe:
+      initialDelaySeconds: 30
+    zookeeper:
+      fullnameOverride: "zookeeper"
+  externalKafka:
+    brokers:
+      - SASL_PLAINTEXT://kafka-headless:9092
+    auth:
+      protocal: sasl
+      jaas:
+        user: connect
+        password: connect

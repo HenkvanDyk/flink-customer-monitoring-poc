@@ -1,0 +1,6 @@
+dependencies:
+- name: schema-registry
+  repository: https://charts.bitnami.com/bitnami
+  version: 9.0.1
+digest: sha256:a5576a0f8bc4624ab586cd269863f783362058b74fa283db64a2b601546549d4
+generated: "2024-08-23T17:21:04.658559+01:00"

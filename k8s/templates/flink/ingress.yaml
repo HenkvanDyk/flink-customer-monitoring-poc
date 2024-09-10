@@ -1,0 +1,23 @@
+## Skipping since I don't want to set up an ingress controller on local
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: flink-example-1-ingress
+#   namespace: flink
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: localhost  # Use 'localhost' for local access
+#       http:
+#         paths:
+#           - path: /flink/flink-poc(/|$)(.*)
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: flink-example-1-jobmanager
+#                 port:
+#                   number: 8081

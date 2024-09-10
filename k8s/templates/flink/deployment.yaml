@@ -1,0 +1,47 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  namespace: flink
+  name: flink-example-jobmanager-1
+spec:
+  image: flink:1.17
+  flinkVersion: v1_17
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: pod-template
+    spec:
+      containers:
+        - name: flink-main-container
+          env:
+            - name: ENABLE_BUILT_IN_PLUGINS
+              value: flink-s3-fs-hadoop-1.17.2.jar
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+    state.savepoints.dir: s3://test/savepoins
+    state.checkpoints.dir: s3://test/checkpoints
+    s3.endpoint: http://flink-poc-minio.minio-dev:9000
+    s3.path.style.access: "true"
+    s3.access-key: minio
+    s3.secret-key: minio
+  # Skipping since I don't want to set up an ingress controller on local
+  # ingress: 
+  #   template: "/flink/flink-poc(/|$)(.*)"
+  #   className: "nginx"
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: "1000m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "1000m"
+      cpu: 1
+    replicas: 2
+  job:
+    jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
+    parallelism: 1
+    state: running
